@@ -1,26 +1,117 @@
 @import "tailwindcss";
 
+/* ── Tema değişkenleri ──────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --primary: #7c3aed;
+  --lavender: #c9a1e6;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-lavender: var(--lavender);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar gizle ────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Kalp animasyonu ────────────────────────────────────────── */
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.6); }
+  50%  { transform: scale(1.2); }
+  75%  { transform: scale(1.45); }
+  100% { transform: scale(1); }
+}
+
+@keyframes floatUp {
+  0%   { opacity: 0.9; transform: translateY(0) scale(1.2); }
+  60%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-72px) scale(0.4); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(32px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-heart-pop  { animation: heartPop  0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+.animate-float-up   { animation: floatUp   0.8s ease-out forwards; }
+.animate-fade-in-up { animation: fadeInUp  0.5s ease-out both; }
+.animate-slide-in-right { animation: slideInRight 0.4s ease-out both; }
+.animate-modal-in   { animation: modalIn   0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-toast-in   { animation: toastIn   0.3s ease-out both; }
+
+/* ── Cam efekti ─────────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-dark {
+  background: rgba(9, 9, 11, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Metin gradyanı ─────────────────────────────────────────── */
+.text-gradient-purple {
+  background: linear-gradient(135deg, #c9a1e6 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-soft {
+  background: linear-gradient(135deg, #e4d9f5 0%, #c9a1e6 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Buton glow efekti ──────────────────────────────────────── */
+.btn-glow {
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.35);
+  transition: box-shadow 0.2s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 0 36px rgba(124, 58, 237, 0.55);
 }
