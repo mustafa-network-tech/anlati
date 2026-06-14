@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import AuthModal from "@/components/AuthModal";
 
 // ══════════════════════════════════════════════════════════════════════════════
 // TIPLER
@@ -419,16 +421,24 @@ function NewConfessionModal({ onClose, onSubmit }: { onClose: () => void; onSubm
 // ══════════════════════════════════════════════════════════════════════════════
 
 export default function AnlatiWomenWebsite() {
-  // Misafir kullanıcı mock — gerçek uygulamada auth context'ten alınır
-  const isGuest = true;
+  // ── Gerçek Supabase Auth ────────────────────────────────────────────────
+  const { user, isGuest, loading: authLoading, signOut } = useAuth();
 
   const [stories, setStories] = useState<IStory[]>(INITIAL_STORIES);
   const [selectedStory, setSelectedStory] = useState<IStory | null>(null);
   const [showConfession, setShowConfession] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<"login" | "register">("login");
   const [likeAnimating, setLikeAnimating] = useState<string | null>(null);
   const [floatingHearts, setFloatingHearts] = useState<{ id: string; storyId: string }[]>([]);
   const [activeNav, setActiveNav] = useState("home");
   const [toast, setToast] = useState({ message: "", visible: false });
+
+  /** Giriş gerektiren işlemlerde auth modal açar */
+  const requireAuth = useCallback((mode: "login" | "register" = "login") => {
+    setAuthModalMode(mode);
+    setShowAuthModal(true);
+  }, []);
 
   // ── Bildirim toastı ────────────────────────────────────────────────────────
   const showToast = useCallback((message: string) => {
@@ -438,7 +448,7 @@ export default function AnlatiWomenWebsite() {
 
   // ── Beğeni ────────────────────────────────────────────────────────────────
   const handleLike = useCallback((storyId: string) => {
-    if (isGuest) { showToast("Beğeni yapmak için giriş yapmalısın."); return; }
+    if (isGuest) { requireAuth(); return; }
     setLikeAnimating(storyId);
     setTimeout(() => setLikeAnimating(null), 600);
     const hId = `h-${Date.now()}`;
@@ -447,23 +457,23 @@ export default function AnlatiWomenWebsite() {
     setStories((prev) => prev.map((s) => s.id === storyId
       ? { ...s, isLiked: !s.isLiked, likes: s.isLiked ? s.likes - 1 : s.likes + 1 }
       : s));
-  }, [isGuest, showToast]);
+  }, [isGuest, requireAuth]);
 
   // ── Kaydet ────────────────────────────────────────────────────────────────
   const handleSave = useCallback((storyId: string) => {
-    if (isGuest) { showToast("Kaydetmek için giriş yapmalısın."); return; }
+    if (isGuest) { requireAuth(); return; }
     setStories((prev) => prev.map((s) => s.id === storyId ? { ...s, isSaved: !s.isSaved } : s));
-  }, [isGuest, showToast]);
+  }, [isGuest, requireAuth]);
 
   // ── Yorum ─────────────────────────────────────────────────────────────────
   const handleComment = useCallback((story: IStory) => {
-    if (isGuest) { showToast("Yorum yazmak için giriş yapmalısın."); return; }
+    if (isGuest) { requireAuth(); return; }
     setSelectedStory(story);
-  }, [isGuest, showToast]);
+  }, [isGuest, requireAuth]);
 
   // ── Yeni itiraf ───────────────────────────────────────────────────────────
   const handleNewConfession = () => {
-    if (isGuest) { showToast("İtiraf yazmak için giriş yapmalısın."); return; }
+    if (isGuest) { requireAuth(); return; }
     setShowConfession(true);
   };
 
@@ -709,12 +719,20 @@ export default function AnlatiWomenWebsite() {
   );
 
   /** Profil sayfası */
+  const displayName = (user?.user_metadata?.display_name as string | undefined)
+    ?? user?.email?.split("@")[0]
+    ?? "Kullanıcı";
+  const avatarLetter = displayName.charAt(0).toUpperCase();
+  const memberSince = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString("tr-TR", { month: "long", year: "numeric" })
+    : "";
+
   const ProfileView = (
     <div className="h-full overflow-y-scroll scrollbar-hide pt-14 pb-20">
       <div className="max-w-lg mx-auto">
         {isGuest ? (
-          /* Misafir kullanıcı */
-          <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
+          /* ── Misafir: kayıt / giriş ekranı ── */
+          <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-violet-800 to-purple-950 border border-violet-500/30 flex items-center justify-center mb-5">
               <svg className="w-12 h-12 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -725,14 +743,19 @@ export default function AnlatiWomenWebsite() {
               Kendi hikayelerini paylaş, topluluğa katıl, diğer kadınlarla bağlantı kur.
             </p>
             <div className="w-full space-y-3">
-              <button className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm transition-all btn-glow">
+              <button
+                onClick={() => requireAuth("login")}
+                className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-sm transition-all btn-glow"
+              >
                 Giriş Yap
               </button>
-              <button className="w-full py-3.5 rounded-2xl glass border border-white/10 text-zinc-300 font-semibold text-sm hover:border-violet-500/30 transition-all">
+              <button
+                onClick={() => requireAuth("register")}
+                className="w-full py-3.5 rounded-2xl glass border border-white/10 text-zinc-300 font-semibold text-sm hover:border-violet-500/30 transition-all"
+              >
                 Hesap Oluştur — Ücretsiz
               </button>
             </div>
-            {/* Platform özellikleri */}
             <div className="mt-10 w-full space-y-3">
               {[
                 { icon: "🎭", title: "Anonim paylaşım", desc: "Kimliğini gizleyerek özgürce anlat" },
@@ -750,17 +773,24 @@ export default function AnlatiWomenWebsite() {
             </div>
           </div>
         ) : (
-          /* Giriş yapmış kullanıcı profili */
+          /* ── Giriş yapılmış kullanıcı profili ── */
           <div>
             {/* Profil başlığı */}
-            <div className="relative pt-8 pb-6 px-5 text-center border-b border-white/6">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-600 to-purple-900 border-2 border-violet-500/40 flex items-center justify-center text-3xl mx-auto mb-4">
-                S
+            <div className="pt-8 pb-6 px-5 text-center border-b border-white/6">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-600 to-purple-900 border-2 border-violet-500/40 flex items-center justify-center text-3xl font-black text-white mx-auto mb-4">
+                {avatarLetter}
               </div>
-              <h3 className="text-lg font-black text-zinc-100">Selin A.</h3>
-              <p className="text-xs text-zinc-500 mt-1">@selin · Üye Mayıs 2025</p>
+              <h3 className="text-lg font-black text-zinc-100">{displayName}</h3>
+              <p className="text-xs text-zinc-500 mt-1">{user?.email}</p>
+              {memberSince && (
+                <p className="text-xs text-zinc-600 mt-0.5">Üye · {memberSince}</p>
+              )}
               <div className="flex items-center justify-center gap-8 mt-5">
-                {[{ label: "Hikaye", count: "3" }, { label: "Beğeni", count: "142" }, { label: "Takipçi", count: "89" }].map((s) => (
+                {[
+                  { label: "Hikaye",  count: "—" },
+                  { label: "Beğeni",  count: fmt(stories.filter((s) => s.isLiked).length) },
+                  { label: "Kaydedilen", count: fmt(savedStories.length) },
+                ].map((s) => (
                   <div key={s.label} className="text-center">
                     <div className="text-lg font-black text-zinc-100">{s.count}</div>
                     <div className="text-[10px] text-zinc-500">{s.label}</div>
@@ -768,8 +798,43 @@ export default function AnlatiWomenWebsite() {
                 ))}
               </div>
             </div>
-            <div className="p-4">
-              <p className="text-xs text-zinc-500 text-center py-8">Hikayeler yükleniyor...</p>
+
+            {/* Aksiyon menüsü */}
+            <div className="px-4 py-4 space-y-2">
+              {[
+                { icon: "📖", label: "Hikayelerim", action: () => {} },
+                { icon: "🔖", label: "Kaydettiklerim", action: () => setActiveNav("favorites") },
+                { icon: "⚙️", label: "Hesap Ayarları", action: () => showToast("Yakında geliyor...") },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  onClick={item.action}
+                  className="w-full flex items-center gap-4 glass rounded-2xl px-4 py-3.5 border border-white/6 hover:border-violet-500/20 text-left transition-all group"
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors flex-1">
+                    {item.label}
+                  </span>
+                  <svg className="w-4 h-4 text-zinc-600 group-hover:text-zinc-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              ))}
+
+              {/* Çıkış yap */}
+              <button
+                onClick={async () => {
+                  await signOut();
+                  setActiveNav("home");
+                  showToast("Çıkış yapıldı. Görüşmek üzere 💜");
+                }}
+                className="w-full flex items-center gap-4 rounded-2xl px-4 py-3.5 border border-rose-500/15 hover:border-rose-500/35 hover:bg-rose-950/20 text-left transition-all group mt-4"
+              >
+                <span className="text-xl">👋</span>
+                <span className="text-sm font-medium text-rose-400 group-hover:text-rose-300 transition-colors">
+                  Çıkış Yap
+                </span>
+              </button>
             </div>
           </div>
         )}
@@ -795,26 +860,37 @@ export default function AnlatiWomenWebsite() {
             <span className="text-[9px] text-zinc-500 font-semibold tracking-[0.2em] uppercase">Kadınlar İçin</span>
           </div>
 
-          {/* Sağ: bildirim + profil */}
+          {/* Sağ: bildirim + profil / giriş yap */}
           <div className="flex items-center gap-3">
-            {/* Bildirim */}
-            <button className="relative w-9 h-9 rounded-full bg-white/6 border border-white/8 flex items-center justify-center text-zinc-400 hover:text-zinc-200 transition-colors">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              {/* Kırmızı nokta */}
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500" />
-            </button>
-            {/* Avatar */}
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-purple-900 border border-violet-500/30 flex items-center justify-center cursor-pointer">
-              {isGuest ? (
-                <svg className="w-5 h-5 text-violet-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              ) : (
-                <span className="text-xs font-bold text-white">S</span>
-              )}
-            </div>
+            {isGuest ? (
+              /* Misafir: Giriş Yap butonu */
+              <button
+                onClick={() => requireAuth("login")}
+                className="px-3.5 py-1.5 rounded-xl bg-violet-600/20 border border-violet-500/30 text-violet-300 text-xs font-semibold hover:bg-violet-600/35 transition-all"
+              >
+                Giriş Yap
+              </button>
+            ) : (
+              /* Giriş yapılmış: bildirim + avatar + çıkış */
+              <>
+                <button className="relative w-9 h-9 rounded-full bg-white/6 border border-white/8 flex items-center justify-center text-zinc-400 hover:text-zinc-200 transition-colors">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => setActiveNav("profile")}
+                  className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 to-purple-900 border border-violet-500/30 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+                  title={user?.user_metadata?.display_name ?? user?.email ?? "Profil"}
+                >
+                  <span className="text-xs font-bold text-white">
+                    {(user?.user_metadata?.display_name as string | undefined)?.charAt(0).toUpperCase()
+                      ?? user?.email?.charAt(0).toUpperCase()
+                      ?? "?"}
+                  </span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -891,6 +967,18 @@ export default function AnlatiWomenWebsite() {
         <NewConfessionModal
           onClose={() => setShowConfession(false)}
           onSubmit={() => { showToast("İtirafın başarıyla paylaşıldı! ✨"); setShowConfession(false); }}
+        />
+      )}
+
+      {/* Auth Modal — giriş / kayıt */}
+      {showAuthModal && (
+        <AuthModal
+          initialMode={authModalMode}
+          onClose={() => setShowAuthModal(false)}
+          onSuccess={() => {
+            setShowAuthModal(false);
+            showToast("Hoş geldin! 💜");
+          }}
         />
       )}
 
