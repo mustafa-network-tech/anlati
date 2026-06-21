@@ -67,6 +67,12 @@ export default function AuthModal({
     setLoading(true);
     const supabase = createClient();
 
+    if (!supabase) {
+      setError("Kimlik doğrulama şu an yapılandırılmamış. Lütfen daha sonra tekrar dene.");
+      setLoading(false);
+      return;
+    }
+
     try {
       if (isLogin) {
         const { error: err } = await supabase.auth.signInWithPassword({
@@ -224,6 +230,11 @@ export default function AuthModal({
                 if (!email.trim()) { setError("Önce e-posta adresini gir."); return; }
                 setLoading(true);
                 const supabase = createClient();
+                if (!supabase) {
+                  setError("Kimlik doğrulama şu an yapılandırılmamış.");
+                  setLoading(false);
+                  return;
+                }
                 await supabase.auth.resetPasswordForEmail(email.trim());
                 setSuccessMsg("Şifre sıfırlama bağlantısı e-postana gönderildi.");
                 setLoading(false);

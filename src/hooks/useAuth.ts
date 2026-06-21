@@ -13,7 +13,7 @@ interface AuthState {
 
 /**
  * Supabase oturum durumunu takip eden React hook.
- * Tüm client component'lerinde kullanılabilir.
+ * Env eksikse misafir modunda kalır, uygulama çökmez.
  */
 export function useAuth(): AuthState {
   const [user, setUser] = useState<User | null>(null);
@@ -22,13 +22,16 @@ export function useAuth(): AuthState {
   useEffect(() => {
     const supabase = createClient();
 
-    // Sayfa yüklendiğinde mevcut oturumu al
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
     });
 
-    // Oturum değişikliklerini dinle (giriş / çıkış / token yenileme)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -41,6 +44,7 @@ export function useAuth(): AuthState {
 
   const signOut = async () => {
     const supabase = createClient();
+    if (!supabase) return;
     await supabase.auth.signOut();
   };
 

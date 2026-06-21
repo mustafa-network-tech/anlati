@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "@/components/AuthModal";
 
@@ -85,6 +85,31 @@ const STORY_CIRCLES: IStoryCircle[] = [
   { id: "family",        label: "Aile",               emoji: "🏡", count: 198, ringClass: "from-amber-500 via-orange-500 to-yellow-500" },
   { id: "restart",       label: "Yeniden Başlamak",   emoji: "🌱", count: 112, ringClass: "from-emerald-500 via-teal-500 to-green-500" },
 ];
+
+/** Story circle → kategori eşlemesi */
+const CIRCLE_CATEGORY_MAP: Record<string, string> = {
+  relationships: "İlişkiler",
+  motherhood: "Annelik",
+  work: "İş Hayatı",
+  loneliness: "Yalnızlık",
+  family: "Aile",
+  restart: "Yeniden Başlamak",
+};
+
+/** Circle tıklanınca açılacak hikayeyi seç */
+function pickStoryForCircle(circleId: string, stories: IStory[]): IStory | undefined {
+  if (circleId === "trending") {
+    return [...stories].sort((a, b) => b.likes - a.likes)[0];
+  }
+  if (circleId === "today") {
+    return stories[0];
+  }
+  const category = CIRCLE_CATEGORY_MAP[circleId];
+  if (category) {
+    return stories.find((s) => s.category === category);
+  }
+  return stories[0];
+}
 
 // ══════════════════════════════════════════════════════════════════════════════
 // MOCK HİKAYELER (6 adet — tam metin dahil)
@@ -268,7 +293,7 @@ function StoryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-6">
+    <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-0 md:p-6">
       <div className="absolute inset-0 bg-zinc-950/85 backdrop-blur-md" onClick={onClose} />
       <div className="relative z-10 w-full max-w-2xl max-h-[92vh] md:max-h-[86vh] bg-zinc-900 border border-white/10 rounded-t-3xl md:rounded-3xl flex flex-col shadow-2xl animate-modal-in overflow-hidden">
         {/* Header */}
@@ -361,7 +386,7 @@ function NewConfessionModal({ onClose, onSubmit }: { onClose: () => void; onSubm
   const isValid = form.title.trim() && form.category && form.text.trim().length > 20;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-6">
+    <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-0 md:p-6">
       <div className="absolute inset-0 bg-zinc-950/85 backdrop-blur-md" onClick={onClose} />
       <div className="relative z-10 w-full max-w-xl max-h-[94vh] bg-zinc-900 border border-white/10 rounded-t-3xl md:rounded-3xl flex flex-col shadow-2xl animate-modal-in overflow-hidden">
         <div className="flex items-center justify-between p-6 pb-4 border-b border-white/8 shrink-0">
@@ -432,7 +457,26 @@ export default function AnlatiWomenWebsite() {
   const [likeAnimating, setLikeAnimating] = useState<string | null>(null);
   const [floatingHearts, setFloatingHearts] = useState<{ id: string; storyId: string }[]>([]);
   const [activeNav, setActiveNav] = useState("home");
+  const [categoryFilter, setCategoryFilter] = useState("Tümü");
   const [toast, setToast] = useState({ message: "", visible: false });
+
+  /** Hikaye okuma modalını aç — misafirler de okuyabilir */
+  const openStory = useCallback((story: IStory) => {
+    setSelectedStory(story);
+  }, []);
+
+  /** Story circle tıklama */
+  const handleCircleClick = useCallback((circleId: string) => {
+    const story = pickStoryForCircle(circleId, stories);
+    if (story) openStory(story);
+  }, [stories, openStory]);
+
+  // Modal açıkken arka plan kaydırmayı kilitle
+  useEffect(() => {
+    const locked = selectedStory || showConfession || showAuthModal;
+    document.body.style.overflow = locked ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [selectedStory, showConfession, showAuthModal]);
 
   /** Giriş gerektiren işlemlerde auth modal açar */
   const requireAuth = useCallback((mode: "login" | "register" = "login") => {
@@ -465,11 +509,10 @@ export default function AnlatiWomenWebsite() {
     setStories((prev) => prev.map((s) => s.id === storyId ? { ...s, isSaved: !s.isSaved } : s));
   }, [isGuest, requireAuth]);
 
-  // ── Yorum ─────────────────────────────────────────────────────────────────
+  // ── Yorum — misafir yorum yazamaz ama hikayeyi okuyabilir ───────────────
   const handleComment = useCallback((story: IStory) => {
-    if (isGuest) { requireAuth(); return; }
-    setSelectedStory(story);
-  }, [isGuest, requireAuth]);
+    openStory(story);
+  }, [openStory]);
 
   // ── Yeni itiraf ───────────────────────────────────────────────────────────
   const handleNewConfession = () => {
@@ -485,6 +528,9 @@ export default function AnlatiWomenWebsite() {
 
   // ── Kaydedilen hikayeler ───────────────────────────────────────────────
   const savedStories = stories.filter((s) => s.isSaved);
+  const filteredStories = categoryFilter === "Tümü"
+    ? stories
+    : stories.filter((s) => s.category === categoryFilter);
 
   // ══════════════════════════════════════════════════════════════════════════
   // VIEW BİLEŞENLERİ (inline, state'e erişebilir)
@@ -498,7 +544,12 @@ export default function AnlatiWomenWebsite() {
         <div className="overflow-x-scroll scrollbar-hide px-4 pt-4">
           <div className="flex gap-4 w-max">
             {STORY_CIRCLES.map((circle) => (
-              <button key={circle.id} className="flex flex-col items-center gap-2 shrink-0 group">
+              <button
+                key={circle.id}
+                type="button"
+                onClick={() => handleCircleClick(circle.id)}
+                className="flex flex-col items-center gap-2 shrink-0 group"
+              >
                 <div className={`p-[2.5px] rounded-full bg-gradient-to-tr ${circle.ringClass} group-hover:scale-105 transition-transform`}>
                   <div className="w-14 h-14 rounded-full bg-zinc-950 border-[2px] border-zinc-950 flex items-center justify-center">
                     <span className="text-2xl">{circle.emoji}</span>
@@ -535,11 +586,25 @@ export default function AnlatiWomenWebsite() {
                 <span className={`text-xs px-2.5 py-1 rounded-full ${story.categoryStyle}`}>{story.category}</span>
               </div>
               <div className="flex-1 flex flex-col justify-center py-6">
-                <h2 className="text-[1.65rem] sm:text-4xl font-black text-zinc-50 leading-tight tracking-tight mb-5 drop-shadow-lg">{story.title}</h2>
-                <p className="text-zinc-300 text-sm sm:text-base leading-relaxed line-clamp-3">{story.summary}</p>
+                <button
+                  type="button"
+                  onClick={() => openStory(story)}
+                  className="text-left w-full group/title"
+                >
+                  <h2 className="text-[1.65rem] sm:text-4xl font-black text-zinc-50 leading-tight tracking-tight mb-5 drop-shadow-lg group-hover/title:text-violet-100 transition-colors">
+                    {story.title}
+                  </h2>
+                  <p className="text-zinc-300 text-sm sm:text-base leading-relaxed line-clamp-3">
+                    {story.summary}
+                  </p>
+                </button>
               </div>
               <div>
-                <button onClick={() => setSelectedStory(story)} className="w-full py-3.5 mb-4 rounded-2xl glass border border-white/10 text-zinc-200 text-sm font-semibold hover:border-violet-500/40 hover:text-violet-200 transition-all">
+                <button
+                  type="button"
+                  onClick={() => openStory(story)}
+                  className="w-full py-3.5 mb-4 rounded-2xl glass border border-white/10 text-zinc-200 text-sm font-semibold hover:border-violet-500/40 hover:text-violet-200 transition-all"
+                >
                   Tamamını Oku →
                 </button>
                 <div className="flex items-center justify-between mb-4">
@@ -606,14 +671,22 @@ export default function AnlatiWomenWebsite() {
     <div className="h-full overflow-y-scroll scrollbar-hide pt-14 pb-20">
       <div className="px-4 pt-5 pb-4 max-w-lg mx-auto">
         <h2 className="text-xl font-black text-zinc-100 mb-1">Hikayeler</h2>
-        <p className="text-xs text-zinc-500 mb-5">{stories.length} hikaye · Hepsi burada</p>
+        <p className="text-xs text-zinc-500 mb-5">{filteredStories.length} hikaye · Hepsi burada</p>
 
         {/* Kategori filtresi */}
         <div className="overflow-x-scroll scrollbar-hide mb-5">
           <div className="flex gap-2 w-max pb-1">
             {["Tümü", ...CATEGORY_OPTIONS].map((cat) => (
-              <button key={cat}
-                className="px-3.5 py-1.5 rounded-full border border-white/10 text-xs text-zinc-400 hover:border-violet-500/40 hover:text-violet-300 whitespace-nowrap transition-all bg-zinc-900/60">
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setCategoryFilter(cat)}
+                className={`px-3.5 py-1.5 rounded-full border text-xs whitespace-nowrap transition-all ${
+                  categoryFilter === cat
+                    ? "border-violet-500/60 bg-violet-500/15 text-violet-300"
+                    : "border-white/10 text-zinc-400 hover:border-violet-500/40 hover:text-violet-300 bg-zinc-900/60"
+                }`}
+              >
                 {cat}
               </button>
             ))}
@@ -622,8 +695,8 @@ export default function AnlatiWomenWebsite() {
 
         {/* Hikaye listesi */}
         <div className="space-y-3">
-          {stories.map((story) => (
-            <button key={story.id} onClick={() => setSelectedStory(story)}
+          {filteredStories.map((story) => (
+            <button key={story.id} type="button" onClick={() => openStory(story)}
               className="w-full text-left glass rounded-2xl p-4 border border-white/6 hover:border-violet-500/25 transition-all group">
               <div className="flex items-start gap-3">
                 {/* Mini atmosfer kutusu */}
@@ -689,7 +762,7 @@ export default function AnlatiWomenWebsite() {
         ) : (
           <div className="space-y-3">
             {savedStories.map((story) => (
-              <button key={story.id} onClick={() => setSelectedStory(story)}
+              <button key={story.id} type="button" onClick={() => openStory(story)}
                 className="w-full text-left glass rounded-2xl p-4 border border-violet-500/15 hover:border-violet-500/30 transition-all group">
                 <div className="flex items-start gap-3">
                   <div className={`w-14 h-14 rounded-xl shrink-0 bg-gradient-to-br ${story.visual.gradient} relative overflow-hidden`}>
@@ -898,10 +971,12 @@ export default function AnlatiWomenWebsite() {
       {/* ────────────────────────────────────────────────────────────────────
           ANA İÇERİK ALANI — aktif sekmeye göre view değişir
       ──────────────────────────────────────────────────────────────────── */}
-      {activeNav === "home"      && HomeView}
-      {activeNav === "stories"   && StoriesView}
-      {activeNav === "favorites" && FavoritesView}
-      {activeNav === "profile"   && ProfileView}
+      <div className="h-full">
+        {activeNav === "home"      && HomeView}
+        {activeNav === "stories"   && StoriesView}
+        {activeNav === "favorites" && FavoritesView}
+        {activeNav === "profile"   && ProfileView}
+      </div>
 
       {/* ────────────────────────────────────────────────────────────────────
           ALT NAVİGASYON — Instagram benzeri sabit bar
