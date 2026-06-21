@@ -21,14 +21,11 @@ android {
 
     defaultConfig {
         applicationId "com.mkdigitalsystems.anlati"
-        // flutter_secure_storage için min SDK 18+
-        minSdk    = 21
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
-
-        // Multidex
-        multiDexEnabled true
+        minSdk         = 21
+        targetSdk      = flutter.targetSdkVersion
+        versionCode    = flutter.versionCode
+        versionName    = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
