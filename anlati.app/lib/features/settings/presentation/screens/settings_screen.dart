@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          _SectionHeader(title: 'Hesap'),
+          const _SectionHeader(title: 'Hesap'),
           _SettingsTile(
             icon:     Icons.person_outline_rounded,
             label:    'Profili Düzenle',
@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
             onTap:    () {},
           ),
 
-          _SectionHeader(title: 'Uygulama'),
+          const _SectionHeader(title: 'Uygulama'),
           _SettingsTile(
             icon:     Icons.dark_mode_outlined,
             label:    'Tema',
@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
             onTap:    () {},
           ),
 
-          _SectionHeader(title: 'Gizlilik & Güvenlik'),
+          const _SectionHeader(title: 'Gizlilik & Güvenlik'),
           _SettingsTile(
             icon:     Icons.shield_outlined,
             label:    'Gizlilik Politikası',
@@ -67,7 +67,7 @@ class SettingsScreen extends StatelessWidget {
             onTap:    () => _showDeleteDialog(context),
           ),
 
-          _SectionHeader(title: 'Hakkında'),
+          const _SectionHeader(title: 'Hakkında'),
           _SettingsTile(
             icon:     Icons.info_outline_rounded,
             label:    'Uygulama Hakkında',

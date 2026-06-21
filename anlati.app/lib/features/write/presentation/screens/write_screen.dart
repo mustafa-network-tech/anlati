@@ -138,7 +138,7 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  Icon(Icons.edit_note_rounded, size: 16, color: AppColors.textMuted),
+                  const Icon(Icons.edit_note_rounded, size: 16, color: AppColors.textMuted),
                   const SizedBox(width: 8),
                   AnimatedBuilder(
                     animation: _contentCtrl,
@@ -319,9 +319,10 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                               ),
                             ),
                             Switch.adaptive(
-                              value:           _isAnon,
-                              onChanged:       (v) => setState(() => _isAnon = v),
-                              activeColor:     AppColors.accent,
+                              value:              _isAnon,
+                              onChanged:          (v) => setState(() => _isAnon = v),
+                              activeThumbColor:   AppColors.accent,
+                              activeTrackColor:   AppColors.accent.withValues(alpha: 0.4),
                               inactiveThumbColor: AppColors.textMuted,
                             ),
                           ],

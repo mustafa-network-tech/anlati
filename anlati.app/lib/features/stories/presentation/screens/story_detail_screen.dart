@@ -5,7 +5,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/models/story_model.dart';
 import '../../../../shared/widgets/category_badge.dart';
-import '../../../../shared/widgets/skeleton_loader.dart';
 import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../../home/domain/stories_provider.dart';
 import '../../../home/data/stories_repository.dart';
@@ -23,7 +22,7 @@ class _StoryDetailScreenState extends ConsumerState<StoryDetailScreen> {
   final _scrollController = ScrollController();
   double _readProgress = 0;
   final _commentCtrl = TextEditingController();
-  bool   _isPostingComment = false;
+  final bool _isPostingComment = false;
 
   @override
   void initState() {
@@ -240,9 +239,9 @@ class _StoryView extends StatelessWidget {
           child: Container(
             padding:    EdgeInsets.fromLTRB(16, 12, 16,
                 MediaQuery.of(context).padding.bottom + 12),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color:  AppColors.card,
-              border: const Border(
+              border: Border(
                 top: BorderSide(color: AppColors.cardBorder, width: 1),
               ),
             ),

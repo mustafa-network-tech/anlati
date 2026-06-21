@@ -52,9 +52,11 @@ class _SplashScreenState extends State<SplashScreen>
     await Future.delayed(const Duration(milliseconds: 2400));
     if (!mounted) return;
 
-    final prefs   = await SharedPreferences.getInstance();
-    final sawOnb  = prefs.getBool('onboarding_seen') ?? false;
-    final user    = Supabase.instance.client.auth.currentUser;
+    final prefs  = await SharedPreferences.getInstance();
+    final sawOnb = prefs.getBool('onboarding_seen') ?? false;
+    final user   = Supabase.instance.client.auth.currentUser;
+
+    if (!mounted) return;
 
     if (!sawOnb) {
       context.go(AppRoutes.onboarding);

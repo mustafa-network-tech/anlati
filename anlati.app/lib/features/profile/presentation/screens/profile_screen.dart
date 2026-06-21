@@ -5,10 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../shared/widgets/story_card_widget.dart';
 import '../../../../shared/widgets/empty_state_widget.dart';
-import '../../../home/domain/stories_provider.dart';
-import '../../../home/data/stories_repository.dart';
 
 final _profileProvider = FutureProvider.autoDispose<Map<String, dynamic>?>((ref) async {
   final userId = Supabase.instance.client.auth.currentUser?.id;
@@ -171,11 +168,11 @@ class ProfileScreen extends ConsumerWidget {
                   // İstatistikler
                   Row(
                     children: [
-                      _StatCard(label: 'Hikâye',   value: '0'),
+                      const _StatCard(label: 'Hikâye', value: '0'),
                       const SizedBox(width: 10),
-                      _StatCard(label: 'Okunma',   value: '0'),
+                      const _StatCard(label: 'Okunma', value: '0'),
                       const SizedBox(width: 10),
-                      _StatCard(label: 'Beğeni',   value: '0'),
+                      const _StatCard(label: 'Beğeni', value: '0'),
                     ],
                   ),
 
@@ -187,11 +184,11 @@ class ProfileScreen extends ConsumerWidget {
                   Wrap(
                     spacing: 10, runSpacing: 10,
                     children: [
-                      _BadgeChip(emoji: '🌱', label: 'Yeni Üye', locked: false),
-                      _BadgeChip(emoji: '✍️', label: 'İlk Hikâye', locked: true),
-                      _BadgeChip(emoji: '👁️', label: '1K Görüntülenme', locked: true),
-                      _BadgeChip(emoji: '💬', label: '100 Yorum', locked: true),
-                      _BadgeChip(emoji: '❤️', label: 'Topluluk Kahramanı', locked: true),
+                      const _BadgeChip(emoji: '🌱', label: 'Yeni Üye',            locked: false),
+                      const _BadgeChip(emoji: '✍️', label: 'İlk Hikâye',          locked: true),
+                      const _BadgeChip(emoji: '👁️', label: '1K Görüntülenme',     locked: true),
+                      const _BadgeChip(emoji: '💬', label: '100 Yorum',            locked: true),
+                      const _BadgeChip(emoji: '❤️', label: 'Topluluk Kahramanı',  locked: true),
                     ],
                   ),
 
