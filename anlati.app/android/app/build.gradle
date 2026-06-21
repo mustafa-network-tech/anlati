@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // Flutter Gradle Plugin — pubspec.yaml path
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace "com.mkdigitalsystems.anlati"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId "com.mkdigitalsystems.anlati"
+        // flutter_secure_storage için min SDK 18+
+        minSdk    = 21
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+
+        // Multidex
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            // Şimdilik debug imzası; prodüksiyon için key.properties dosyası ekle
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+    }
+}
+
+flutter {
+    source "../.."
+}
