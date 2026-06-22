@@ -26,18 +26,27 @@ Future<void> main() async {
   // Ortam değişkenlerini yükle
   await dotenv.load(fileName: '.env');
 
-  final supabaseUrl     = dotenv.env['SUPABASE_URL'] ?? '';
-  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+  final supabaseUrl = dotenv.env['SUPABASE_URL'] ??
+      dotenv.env['NEXT_PUBLIC_SUPABASE_URL'] ??
+      '';
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ??
+      dotenv.env['NEXT_PUBLIC_SUPABASE_ANON_KEY'] ??
+      '';
 
-  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
-    debugPrint('⚠️  .env dosyasında SUPABASE_URL veya SUPABASE_ANON_KEY eksik!');
-  }
+  assert(
+    supabaseUrl.isNotEmpty && supabaseUrl.startsWith('https://'),
+    '.env dosyasında geçerli bir SUPABASE_URL bulunamadı!',
+  );
+  assert(
+    supabaseAnonKey.isNotEmpty,
+    '.env dosyasında SUPABASE_ANON_KEY bulunamadı!',
+  );
 
   // Supabase'i başlat
   await Supabase.initialize(
-    url:            supabaseUrl,
-    anonKey:        supabaseAnonKey,
-    debug:          false,
+    url:     supabaseUrl,
+    anonKey: supabaseAnonKey,
+    debug:   false,
   );
 
   runApp(
