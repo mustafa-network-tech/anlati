@@ -72,7 +72,7 @@ Bazı insanlar sevgilerini göstermeyi öğrenemeden gidiyorlar. Bu onların en 
       shareCount:  112,
       createdAt:   DateTime(2025, 1, 22),
       updatedAt:   DateTime(2025, 1, 22),
-      authorName:  'Mehmet K.',
+      authorName:  'Derya K.',
     ),
 
     // ── 3. İş Hayatı ──────────────────────────────────────────────
@@ -101,7 +101,7 @@ O gün eve dönerken güneş her zamankinden farklı görünüyordu.''',
       shareCount:  88,
       createdAt:   DateTime(2025, 4, 5),
       updatedAt:   DateTime(2025, 4, 5),
-      authorName:  'Anonim Kullanıcı',
+      authorName:  'Anonim',
     ),
 
     // ── 4. İlişkiler ──────────────────────────────────────────────
@@ -190,7 +190,7 @@ Cesaret yaştan bağımsızdır.''',
       shareCount:  342,
       createdAt:   DateTime(2025, 6, 1),
       updatedAt:   DateTime(2025, 6, 1),
-      authorName:  'Dr. Aday H.',
+      authorName:  'Dr. Aday S.',
     ),
 
     // ── 7. Yeniden Başlamak ────────────────────────────────────────
@@ -223,7 +223,7 @@ Yangından sonra daha temiz bir şey inşa edebilirsin.''',
       shareCount:  389,
       createdAt:   DateTime(2025, 7, 8),
       updatedAt:   DateTime(2025, 7, 8),
-      authorName:  'Can D.',
+      authorName:  'Canan D.',
     ),
 
     // ── 8. Özgürlük ───────────────────────────────────────────────

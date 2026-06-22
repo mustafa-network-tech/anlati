@@ -210,7 +210,7 @@ Gerçekten mutluyum. İlk kez.
 Bazen bir e-posta, bir kapının kapanması sizi kendinize açılan kapıya iter. Ben o kapıyı bulmak için on yedi yılımı verdim.
 
 Ama buldum. Geç değil.`,
-    author: { name: "Murat B.", initials: "MB", gradient: "from-blue-500 to-indigo-600", isAnonymous: false },
+    author: { name: "Merve B.", initials: "MB", gradient: "from-blue-500 to-indigo-600", isAnonymous: false },
     category: CATEGORIES.work,
     readTime: 4,
     viewCount: 9450,
@@ -408,7 +408,7 @@ Komşular sürpriz börek getiriyor bazen. Bunu İstanbul'da yaşamadım hiç.
 Özgürlük pahalı değil. Bazen sadece yönü değiştirmekle oluyor.
 
 Ve hayır, pişman değilim.`,
-    author: { name: "Can A.", initials: "CA", gradient: "from-teal-500 to-cyan-600", isAnonymous: false },
+    author: { name: "Cansu A.", initials: "CA", gradient: "from-teal-500 to-cyan-600", isAnonymous: false },
     category: CATEGORIES.freedom,
     readTime: 3,
     viewCount: 11230,
@@ -446,7 +446,7 @@ Yeterliydi.
 Senin yapamadığını yapıyorum, bana öğrettiklerinden.
 
 Teşekkür ederim babacığım.`,
-    author: { name: "Ercan M.", initials: "EM", gradient: "from-slate-500 to-slate-600", isAnonymous: false },
+    author: { name: "Ece M.", initials: "EM", gradient: "from-slate-500 to-slate-600", isAnonymous: false },
     category: CATEGORIES.family,
     readTime: 4,
     viewCount: 18900,
