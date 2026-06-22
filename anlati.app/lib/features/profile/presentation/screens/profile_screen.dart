@@ -166,13 +166,13 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
 
                   // İstatistikler
-                  Row(
+                  const Row(
                     children: [
-                      const _StatCard(label: 'Hikâye', value: '0'),
-                      const SizedBox(width: 10),
-                      const _StatCard(label: 'Okunma', value: '0'),
-                      const SizedBox(width: 10),
-                      const _StatCard(label: 'Beğeni', value: '0'),
+                      _StatCard(label: 'Hikâye', value: '0'),
+                      SizedBox(width: 10),
+                      _StatCard(label: 'Okunma', value: '0'),
+                      SizedBox(width: 10),
+                      _StatCard(label: 'Beğeni', value: '0'),
                     ],
                   ),
 
@@ -181,14 +181,14 @@ class ProfileScreen extends ConsumerWidget {
                   // Rozetler
                   Text('Rozetler', style: AppTextStyles.title),
                   const SizedBox(height: 12),
-                  Wrap(
+                  const Wrap(
                     spacing: 10, runSpacing: 10,
                     children: [
-                      const _BadgeChip(emoji: '🌱', label: 'Yeni Üye',            locked: false),
-                      const _BadgeChip(emoji: '✍️', label: 'İlk Hikâye',          locked: true),
-                      const _BadgeChip(emoji: '👁️', label: '1K Görüntülenme',     locked: true),
-                      const _BadgeChip(emoji: '💬', label: '100 Yorum',            locked: true),
-                      const _BadgeChip(emoji: '❤️', label: 'Topluluk Kahramanı',  locked: true),
+                      _BadgeChip(emoji: '🌱', label: 'Yeni Üye',            locked: false),
+                      _BadgeChip(emoji: '✍️', label: 'İlk Hikâye',          locked: true),
+                      _BadgeChip(emoji: '👁️', label: '1K Görüntülenme',     locked: true),
+                      _BadgeChip(emoji: '💬', label: '100 Yorum',            locked: true),
+                      _BadgeChip(emoji: '❤️', label: 'Topluluk Kahramanı',  locked: true),
                     ],
                   ),
 

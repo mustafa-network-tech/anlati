@@ -269,9 +269,9 @@ class _WriteScreenState extends ConsumerState<WriteScreen> {
                     // AI Yardım butonları
                     Text('AI Asistan', style: AppTextStyles.label),
                     const SizedBox(height: 10),
-                    Wrap(
+                    const Wrap(
                       spacing: 8, runSpacing: 8,
-                      children: const [
+                      children: [
                         _AiChip(label: '✨ İyileştir',       hint: 'Yakında'),
                         _AiChip(label: '📝 Başlık Üret',     hint: 'Yakında'),
                         _AiChip(label: '🔒 Anonimleştir',    hint: 'Yakında'),

@@ -44,9 +44,9 @@ Future<void> main() async {
 
   // Supabase'i başlat
   await Supabase.initialize(
-    url:     supabaseUrl,
-    anonKey: supabaseAnonKey,
-    debug:   false,
+    url:            supabaseUrl,
+    publishableKey: supabaseAnonKey,
+    debug:          false,
   );
 
   runApp(
