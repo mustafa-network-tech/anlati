@@ -60,8 +60,11 @@ class StoryCardSkeleton extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             // Category
-            Container(width: 80, height: 24, color: AppColors.surfaceHigh,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: AppColors.surfaceHigh)),
+            Container(width: 80, height: 24,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: AppColors.surfaceHigh,
+              )),
             const SizedBox(height: 10),
             // Title lines
             Container(width: double.infinity, height: 18, color: AppColors.surfaceHigh),
