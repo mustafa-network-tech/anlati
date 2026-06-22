@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import '../../../shared/models/story_model.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/services/supabase_service.dart';
+import '../../../core/mock/mock_stories.dart';
 
 class StoriesRepository {
   StoriesRepository._();
@@ -13,37 +15,60 @@ class StoriesRepository {
     String  orderBy = 'created_at',
     bool    ascending = false,
   }) async {
-    var query = supabase
-        .from(AppConstants.tableStories)
-        .select('*, profiles(display_name, avatar_url)')
-        .eq('is_published', true)
-        .order(orderBy, ascending: ascending)
-        .range(offset, offset + limit - 1);
-
-    if (category != null) {
-      query = supabase
+    try {
+      var query = supabase
           .from(AppConstants.tableStories)
           .select('*, profiles(display_name, avatar_url)')
           .eq('is_published', true)
-          .eq('category', category)
           .order(orderBy, ascending: ascending)
           .range(offset, offset + limit - 1);
-    }
 
-    final data = await query as List<dynamic>;
-    return data.map((e) => StoryModel.fromMap(e as Map<String, dynamic>)).toList();
+      if (category != null) {
+        query = supabase
+            .from(AppConstants.tableStories)
+            .select('*, profiles(display_name, avatar_url)')
+            .eq('is_published', true)
+            .eq('category', category)
+            .order(orderBy, ascending: ascending)
+            .range(offset, offset + limit - 1);
+      }
+
+      final data = await query as List<dynamic>;
+      final stories = data
+          .map((e) => StoryModel.fromMap(e as Map<String, dynamic>))
+          .toList();
+
+      // Supabase boş dönerse mock hikâyeleri göster
+      if (stories.isEmpty) {
+        debugPrint('📖 Supabase boş döndü, mock hikâyeler gösteriliyor.');
+        return MockStories.byCategory(category);
+      }
+      return stories;
+    } catch (e) {
+      // Hata durumunda sessizce mock'a düş
+      debugPrint('⚠️ Supabase hatası: $e — mock hikâyeler kullanılıyor.');
+      return MockStories.byCategory(category);
+    }
   }
 
   Future<StoryModel?> fetchStoryById(String id) async {
-    final data = await supabase
-        .from(AppConstants.tableStories)
-        .select('*, profiles(display_name, avatar_url)')
-        .eq('id', id)
-        .eq('is_published', true)
-        .maybeSingle();
+    // Mock ID ise direkt mock listesinden getir
+    if (id.startsWith('mock_')) return MockStories.byId(id);
 
-    if (data == null) return null;
-    return StoryModel.fromMap(data);
+    try {
+      final data = await supabase
+          .from(AppConstants.tableStories)
+          .select('*, profiles(display_name, avatar_url)')
+          .eq('id', id)
+          .eq('is_published', true)
+          .maybeSingle();
+
+      if (data == null) return null;
+      return StoryModel.fromMap(data);
+    } catch (e) {
+      debugPrint('⚠️ fetchStoryById hatası: $e');
+      return null;
+    }
   }
 
   Future<bool> isLiked(String storyId, String userId) async {

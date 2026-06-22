@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../shared/models/story_model.dart';
 import '../data/stories_repository.dart';
 import '../../../core/services/supabase_service.dart';
+import '../../../core/mock/mock_stories.dart';
 
 // ── Hikâye listesi ─────────────────────────────────────────────
 final storiesProvider = FutureProvider.autoDispose
@@ -12,12 +13,15 @@ final storiesProvider = FutureProvider.autoDispose
 // ── Tek hikâye ─────────────────────────────────────────────────
 final storyDetailProvider = FutureProvider.autoDispose
     .family<StoryModel?, String>((ref, id) async {
+  // Mock ID ise direkt döndür, Supabase'e gitme
+  if (id.startsWith('mock_')) return MockStories.byId(id);
+
   final story = await StoriesRepository.instance.fetchStoryById(id);
   if (story == null) return null;
 
   final userId = SupabaseService.instance.currentUserId;
   if (userId != null) {
-    story.isLiked     = await StoriesRepository.instance.isLiked(id, userId);
+    story.isLiked      = await StoriesRepository.instance.isLiked(id, userId);
     story.isBookmarked = await StoriesRepository.instance.isBookmarked(id, userId);
   }
   return story;
@@ -44,5 +48,5 @@ final myStoriesProvider = FutureProvider.autoDispose<List<StoryModel>>((ref) asy
   final userId = SupabaseService.instance.currentUserId;
   if (userId == null) return [];
 
-  return StoriesRepository.instance.fetchStories(); // Filtreleme profil sayfasında
+  return StoriesRepository.instance.fetchStories();
 });
