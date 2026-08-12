@@ -12,9 +12,9 @@ interface User {
 }
 
 const ROLE_LABELS:   Record<string, string> = { user: "Kullanıcı", moderator: "Moderatör", admin: "Admin" };
-const ROLE_COLORS:   Record<string, string> = { user: "#6b7280",  moderator: "#f59e0b",    admin: "#a855f7" };
+const ROLE_COLORS:   Record<string, string> = { user: "#697176",  moderator: "#b48745",    admin: "#9a6250" };
 const STATUS_LABELS: Record<string, string> = { active: "Aktif",  suspended: "Askıda",     banned: "Yasaklı" };
-const STATUS_COLORS: Record<string, string> = { active: "#22c55e",suspended: "#f59e0b",    banned: "#ef4444" };
+const STATUS_COLORS: Record<string, string> = { active: "#4f735e",suspended: "#b48745",    banned: "#a6534f" };
 
 type Toast = { id: number; msg: string; type: "ok" | "err" };
 
@@ -95,10 +95,10 @@ export default function UsersPage() {
             color:       role === r ? "#c4b5fd" : "#9ca3af",
             borderColor: role === r ? "#7c3aed"  : "#1f2937",
           }}>
-            {r === "" ? "Tüm Roller" : ROLE_LABELS[r]}
+            {r === "" ? "Tümü" : ROLE_LABELS[r]}
           </button>
         ))}
-        {["", "active", "suspended", "banned"].map(s => (
+        {["", "active", "suspended"].map(s => (
           <button key={s} onClick={() => { setStatus(s); setPage(1); }} style={{
             ...filterBtnStyle,
             background:  status === s ? "rgba(34,197,94,0.1)" : "transparent",
@@ -138,7 +138,7 @@ export default function UsersPage() {
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <div style={{
                           width: "32px", height: "32px", borderRadius: "50%",
-                          background: "linear-gradient(135deg,#7c3aed,#a855f7)",
+                          background: "#263b46",
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontSize: "13px", fontWeight: "700", color: "#fff", flexShrink: 0,
                         }}>{(u.display_name ?? u.username ?? "?").charAt(0).toUpperCase()}</div>
@@ -205,7 +205,7 @@ export default function UsersPage() {
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{
                   width: "44px", height: "44px", borderRadius: "50%",
-                  background: "linear-gradient(135deg,#7c3aed,#a855f7)",
+                  background: "#263b46",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "18px", fontWeight: "800", color: "#fff",
                 }}>{(selected.display_name ?? "?").charAt(0).toUpperCase()}</div>
@@ -227,7 +227,7 @@ export default function UsersPage() {
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
               {[
-                { action: "make_admin",     label: "👑 Admin Yap",          color: "#a855f7" },
+                { action: "make_admin",     label: "Admin Yap",             color: "#9a6250" },
                 { action: "make_moderator", label: "🛡 Moderatör Yap",       color: "#f59e0b" },
                 { action: "make_user",      label: "👤 Kullanıcı Yap",       color: "#6b7280" },
                 { action: "suspend",        label: "⏸ Geçici Askıya Al",     color: "#f59e0b" },
