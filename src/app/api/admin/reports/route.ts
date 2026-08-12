@@ -68,10 +68,18 @@ export async function PATCH(req: Request) {
   if (action === "hide_content" && targetId && targetType === "story") {
     await db.from("stories").update({ is_published: false }).eq("id", targetId);
   }
+  if (action === "hide_content" && targetId && targetType === "topic") {
+    await db.from("topics").update({ status: "hidden" }).eq("id", targetId);
+  }
+  if (action === "hide_content" && targetId && targetType === "answer") {
+    await db.from("answers").update({ status: "hidden" }).eq("id", targetId);
+  }
 
   if (action === "delete_content" && targetId) {
     if (targetType === "story")   await db.from("stories").delete().eq("id", targetId);
     if (targetType === "comment") await db.from("comments").delete().eq("id", targetId);
+    if (targetType === "topic")   await db.from("topics").update({ status: "deleted" }).eq("id", targetId);
+    if (targetType === "answer")  await db.from("answers").update({ status: "deleted" }).eq("id", targetId);
   }
 
   if (action === "ban_user" && targetId) {

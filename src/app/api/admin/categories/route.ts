@@ -72,12 +72,12 @@ export async function DELETE(req: Request) {
   if (!id) return NextResponse.json({ error: "id gerekli" }, { status: 400 });
 
   const db = createServiceClient();
-  const { error } = await db.from("categories").delete().eq("id", id);
+  const { error } = await db.from("categories").update({ is_active: false, updated_at: new Date().toISOString() }).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   await db.from("admin_logs").insert({
     admin_id: adminId, action: "category_delete", entity_type: "category",
-    entity_id: id, description: "Kategori silindi",
+    entity_id: id, description: "Kategori pasife alındı",
   });
 
   return NextResponse.json({ ok: true });
