@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 interface AuthState {
   user: User | null;
-  profile: { username: string | null; avatar_url: string | null } | null;
+  profile: { username: string | null; display_name: string | null; avatar_url: string | null } | null;
   isGuest: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -31,7 +31,7 @@ export function useAuth(): AuthState {
 
     const loadProfile = async (id: string | undefined) => {
       if (!id) { setProfile(null); return; }
-      const { data } = await supabase.from("profiles").select("username,avatar_url").eq("id", id).maybeSingle();
+      const { data } = await supabase.from("profiles").select("username,display_name,avatar_url").eq("id", id).maybeSingle();
       setProfile(data);
     };
 
