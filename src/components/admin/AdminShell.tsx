@@ -9,6 +9,7 @@ const NAV = [
   { path: "/admin/dashboard",      label: "Gösterge Paneli", icon: "⬡" },
   { path: "/admin/stories",        label: "Hikâyeler",        icon: "📖" },
   { path: "/admin/comments",       label: "Yorumlar",         icon: "💬" },
+  { path: "/admin/editorial",      label: "Editoryal İçerik", icon: "✦" },
   { path: "/admin/reports",        label: "Şikâyetler",       icon: "🚨" },
   { path: "/admin/users",          label: "Kullanıcılar",     icon: "👥" },
   { path: "/admin/categories",     label: "Kategoriler",      icon: "🏷️" },

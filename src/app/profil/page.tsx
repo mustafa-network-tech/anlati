@@ -1,0 +1,2 @@
+import {redirect} from "next/navigation";import {createClient} from "@/lib/supabase/server";
+export default async function Page(){const supabase=await createClient(),{data:{user}}=await supabase.auth.getUser();if(!user)redirect("/auth");const{data}=await(supabase as any).from("profiles").select("username").eq("id",user.id).single();if(data?.username)redirect(`/profil/${data.username}`);redirect("/")}

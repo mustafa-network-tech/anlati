@@ -1,27 +1,3 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "./globals.css";
-
-const geist = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "ANLATI — Kadınlar İçin",
-  description:
-    "Kadınların hikayelerini, itiraflarını ve iç seslerini anonim ya da isimleriyle paylaşabildiği duygusal bir topluluk platformu.",
-  keywords: ["kadın", "hikaye", "itiraf", "topluluk", "anlati"],
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="tr" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full bg-zinc-950">{children}</body>
-    </html>
-  );
-}
+import type {Metadata} from "next";import SiteHeader from "@/components/SiteHeader";import SiteFooter from "@/components/SiteFooter";import "./globals.css";
+export const metadata:Metadata={metadataBase:new URL(process.env.NEXT_PUBLIC_SITE_URL||"https://anlati.com"),title:{default:"ANLATI — Adamın da anlatacakları var",template:"%s | ANLATI"},description:"Erkeklerin hayatı konuştuğu, kadınların da sözünün olduğu modern soru, cevap ve deneyim platformu.",icons:{icon:[{url:"/image/logo.jpeg",type:"image/jpeg"}],shortcut:"/image/logo.jpeg",apple:"/image/logo.jpeg"}};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="tr"><body><SiteHeader/>{children}<SiteFooter/></body></html>}

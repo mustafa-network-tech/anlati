@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "@/components/AuthModal";
@@ -1469,9 +1470,14 @@ export default function AnlatiV2() {
 
           {/* Logo */}
           <button type="button" onClick={() => setActiveNav("home")} className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/25 group-hover:scale-105 transition-transform">
-              <span className="text-white text-sm font-black">A</span>
-            </div>
+            <Image
+              src="/image/logo.jpeg"
+              alt="Anlatı logosu"
+              width={32}
+              height={32}
+              priority
+              className="h-8 w-8 rounded-xl object-cover shadow-lg shadow-violet-500/25 transition-transform group-hover:scale-105"
+            />
             <span className="font-bold text-zinc-100 text-lg tracking-tight">anlati</span>
           </button>
 
