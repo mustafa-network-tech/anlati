@@ -27,6 +27,7 @@ export default function Kinetic({
   id,
   from = "alt",
   by = "word",
+  eager = false,
 }: {
   text: string;
   as?: React.ElementType;
@@ -34,6 +35,7 @@ export default function Kinetic({
   id?: string;
   from?: "right" | "left" | "alt";
   by?: "word" | "letter";
+  eager?: boolean;
 }) {
   const Tag = as;
   const ref = useRef<HTMLElement | null>(null);
@@ -96,7 +98,7 @@ export default function Kinetic({
   });
 
   return (
-    <Tag ref={ref} id={id} className={`kn kn-armed ${className}`.trim()}>
+    <Tag ref={ref} id={id} className={`kn ${eager ? "" : "kn-armed"} ${className}`.trim()}>
       <span className="sr-only">{plain}</span>
       <span aria-hidden="true">{nodes}</span>
     </Tag>

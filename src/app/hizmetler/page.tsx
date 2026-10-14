@@ -3,18 +3,20 @@ import Link from "next/link";
 import JsonLd from "@/components/studio/JsonLd";
 import Reveal from "@/components/studio/Reveal";
 import { services } from "@/lib/services";
-import { siteUrl } from "@/lib/studio";
+import { ogImages, siteUrl } from "@/lib/studio";
 import "@/components/studio/home.css";
 import "@/components/studio/service.css";
 
 const description =
   "Marka hikâyesi yazımı, Hakkımızda ve kurumsal tanıtım metinleri ile web sitesi metin yazarlığı: işletmeler, kurucular ve kurumlar için net kapsamlı hizmetler.";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Marka Hikâyesi ve Kurumsal Metin Hizmetleri",
   description,
   alternates: { canonical: "/hizmetler" },
-  openGraph: { title: "Hizmetler | ANLATI", description, type: "website", url: `${siteUrl}/hizmetler`, locale: "tr_TR", siteName: "ANLATI" },
+  openGraph: { title: "Hizmetler | ANLATI", description, type: "website", url: `${siteUrl}/hizmetler`, locale: "tr_TR", siteName: "ANLATI", images: ogImages },
 };
 
 export default function ServicesIndex() {

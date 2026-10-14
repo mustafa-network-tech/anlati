@@ -37,12 +37,13 @@ const P = "#fbfaf6";
 export default function KindsShowcase() {
   const [a, setA] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [auto, setAuto] = useState(true);
 
   useEffect(() => {
-    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!auto || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const t = setTimeout(() => setA((x) => (x + 1) % kinds.length), 6500);
     return () => clearTimeout(t);
-  }, [a, paused]);
+  }, [a, paused, auto]);
 
   return (
     <div
@@ -54,7 +55,10 @@ export default function KindsShowcase() {
     >
       <div className="ks-list" role="tablist" aria-label="Anlatı türleri">
         {kinds.map((k, i) => (
-          <button key={k.n} role="tab" aria-selected={i === a} className="ks-item" onClick={() => setA(i)}>
+          <button key={k.n} role="tab" aria-selected={i === a} className="ks-item" onClick={() => {
+              setA(i);
+              setAuto(false);
+            }}>
             <span className="ks-word">{k.word}</span>
             <span className="ks-body">
               <span className="ks-inner">
@@ -67,14 +71,18 @@ export default function KindsShowcase() {
                 </span>
               </span>
             </span>
-            {i === a && (
+            {i === a && auto && (
               <i key={`p${a}`} className="ks-prog" style={{ animationPlayState: paused ? "paused" : "running" }} />
             )}
           </button>
         ))}
+        <button type="button" className="ks-toggle" aria-pressed={!auto} onClick={() => setAuto((v) => !v)}>
+          {auto ? "Otomatik geçişi durdur" : "Otomatik geçişi başlat"}
+        </button>
       </div>
 
-      <div className="ks-stage" style={{ background: kinds[a].bg }} role="tabpanel" aria-label={`${kinds[a].title} sahnesi`}>
+      <div className="ks-stage" style={{ background: kinds[a].bg }} role="tabpanel" aria-label={`${kinds[a].title} sahnesi (kurgusal örnek)`}>
+        <span className="ks-tag">Kurgusal örnek</span>
         <div className={a === 0 ? "scene sc-brand on" : "scene sc-brand"} aria-hidden="true">
           <svg viewBox="0 0 480 350">
             <rect x="0" y="300" width="480" height="50" fill="#d8cdb4" />
@@ -116,7 +124,7 @@ export default function KindsShowcase() {
             <path d="M92 168 q18 14 36 0" stroke={N} strokeWidth="3.5" fill="none" strokeLinecap="round" />
           </svg>
           <div className="bubble">
-            <span className="cap">RÖPORTAJ NOTU · 01</span>
+            <span className="cap">KURGUSAL RÖPORTAJ NOTU</span>
             <p className="q">
               <span className="type" style={{ ["--n" as string]: 20 }}>
                 Bu işi neden kurdum?

@@ -104,6 +104,7 @@ export default function ServicePage({ s }: { s: Service }) {
             </div>
           </div>
           <p className="sv-note">{s.example.note}</p>
+          <p className="hx-disclaimer">Yöntemimizi göstermek için hazırlanmıştır; gerçek müşteri çalışması değildir.</p>
         </Reveal>
       </section>
 

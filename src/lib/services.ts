@@ -37,7 +37,7 @@ export const services: Service[] = [
       "Slogan seçenekleri ve 1 sayfalık ton rehberi (marka dili)",
     ],
     example: {
-      context: "Örnek · Otel yazılımı",
+      context: "Kurgusal örnek · Otel yazılımı",
       before: "Kaliteli ve yenilikçi çözümler sunuyoruz.",
       after: "Küçük otellerin rezervasyonlarını, odalarını ve günlük işlerini tek ekranda topluyoruz.",
       note: "Değişen: kime hitap edildiği, hangi işin kolaylaştığı ve nasıl bir çözüm sunulduğu artık açık.",
@@ -79,7 +79,7 @@ export const services: Service[] = [
       "Başlık ve çağrı (CTA) önerileri",
     ],
     example: {
-      context: "Örnek · B2B hizmet firması",
+      context: "Kurgusal örnek · B2B hizmet firması",
       before: "20 yıllık tecrübemizle sektörün önde gelen firmalarından biriyiz.",
       after: "Fabrikanızın üretim hattı durduğunda arayacağınız ilk numara olmayı hedefliyoruz. Bu yüzden her müşteriye tek bir sorumlu mühendis atıyoruz.",
       note: "Değişen: genel övgü yerine, işletmenin gerçekten uygulayacağı somut çalışma biçimi.",
@@ -122,7 +122,7 @@ export const services: Service[] = [
       "İsteğe bağlı: tasarım ve geliştirme (Anlatı + Dijital Deneyim)",
     ],
     example: {
-      context: "Örnek · Ahşap atölyesi",
+      context: "Kurgusal örnek · Ahşap atölyesi",
       before: "2015 yılında kurulduk. Kaliteli ürünler üretiyoruz.",
       after: "Dedemin tezgâhından kalan üç alet ve bir hata: ilk sipariş yanlış ölçüyle kesildi. Atölyeyi bu hatadan öğrendiğimiz şeyle kurduk.",
       note: "Değişen: tarih ve övgü yerine, işletmeye özgü bir başlangıç hikâyesi.",

@@ -1,17 +1,27 @@
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.anlati.com.tr").replace(/\/$/, "");
 
+export const ogImages = [
+  { url: "/og/anlati-studyo.png", width: 1200, height: 630, alt: "ANLATI: marka hikâyesi ve kurumsal metin hizmetleri" },
+];
+
 export const contactEmail = "iletisim@mk-digitalsystems.com";
 export const whatsappNumber = "905456597551";
 export const whatsappDisplay = "+90 545 659 75 51";
 export const whatsappLink = (text?: string) =>
   `https://wa.me/${whatsappNumber}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 
+export const launch = { endsAt: "2027-01-15T23:59:59+03:00", label: "15 Ocak 2027" };
+
+export const isLaunchActive = (now: number = Date.now()) => now <= Date.parse(launch.endsAt);
+
+export const launchNote = `Lansman fiyatları ${launch.label}’ye kadar geçerlidir.`;
+
 export type Pkg = {
   id: string;
   name: string;
   tagline: string;
-  price: number | null;
-  campaignPrice?: number;
+  launchPrice: number | null;
+  postLaunchPrice: number | null;
   priceNote: string;
   duration: string;
   revisions: string;
@@ -26,8 +36,8 @@ export const packages: Pkg[] = [
     id: "netlik",
     name: "Anlatı Netlik",
     tagline: "Ne yaptığınızı tek net hikâyeye indirir.",
-    price: 14900,
-    campaignPrice: 7900,
+    launchPrice: 7900,
+    postLaunchPrice: null,
     priceNote: "+ KDV",
     duration: "5 iş günü",
     revisions: "1 revizyon turu",
@@ -44,8 +54,8 @@ export const packages: Pkg[] = [
     id: "marka",
     name: "Marka Anlatısı",
     tagline: "Markanızın mesajını web sitenize hazır metinlere çevirir.",
-    price: 39900,
-    campaignPrice: 19900,
+    launchPrice: 19900,
+    postLaunchPrice: null,
     priceNote: "+ KDV",
     duration: "10–12 iş günü",
     revisions: "2 revizyon turu",
@@ -64,7 +74,8 @@ export const packages: Pkg[] = [
     id: "dijital",
     name: "Anlatı + Dijital Deneyim",
     tagline: "Anlatıyı MK Digital Systems ile çalışan bir web sitesine veya ürüne dönüştürür.",
-    price: null,
+    launchPrice: null,
+    postLaunchPrice: null,
     priceNote: "Keşif sonrası teklif",
     duration: "Kapsama göre",
     revisions: "Teklifte belirlenir",
@@ -133,7 +144,7 @@ export const examples = [
   },
 ];
 
-export const faqs = [
+const baseFaqs = [
   {
     q: "Hazır bir metnim yok, yine de başlayabilir miyiz?",
     a: "Evet. Hazır metin gerekmez; bir görüşmeyle başlarız. Sizi dinler, notlarımızı çıkarır ve metni birlikte kurarız.",
@@ -152,13 +163,20 @@ export const faqs = [
   },
   {
     q: "Fiyatlara KDV dahil mi?",
-    a: "Hayır, paket fiyatlarına KDV eklenir. Lansman fiyatı, ilk 3 ay boyunca geçerli kampanya fiyatıdır.",
+    a: "__KDV__",
   },
   {
     q: "Başarıyı nasıl tanımlıyorsunuz?",
     a: "Keşif görüşmesinde başarı ölçütünü birlikte yazarız: ana mesajın anlaşılması, metinlerin kullanıma hazır olması ve hedef kitlenin ilk bakışta ne yaptığınızı ve neden sizi seçmesi gerektiğini kavraması.",
   },
 ];
+
+export function getFaqs(now: number = Date.now()) {
+  const kdv = isLaunchActive(now)
+    ? `Hayır, paket fiyatlarına KDV eklenir. ${launchNote}`
+    : "Hayır, paket fiyatlarına KDV eklenir. Güncel fiyatlar için teklif alabilirsiniz.";
+  return baseFaqs.map((f) => (f.a === "__KDV__" ? { ...f, a: kdv } : f));
+}
 
 export const posters = ["Dinle.", "Netleştir.", "Yaz.", "Bağla."];
 

@@ -53,7 +53,7 @@ export function InstitutionArt() {
 
 export function BrowserMock() {
   return (
-    <svg viewBox="0 0 520 360" role="img" aria-label="Anlatının web sitesine dönüşümünü gösteren örnek tarayıcı penceresi" className="bm">
+    <svg viewBox="0 0 520 360" role="img" aria-label="Anlatının web sitesine dönüşümünü gösteren kurgusal örnek tarayıcı penceresi" className="bm">
       <rect x="10" y="10" width="500" height="340" rx="14" fill={P} stroke="#e6b99f" strokeWidth="2.5" />
       <path d="M10 24 a14 14 0 0 1 14 -14 H496 a14 14 0 0 1 14 14 V50 H10 Z" fill={S} />
       <circle cx="32" cy="30" r="5" fill={C} />
@@ -61,7 +61,7 @@ export function BrowserMock() {
       <circle cx="68" cy="30" r="5" fill="#9fb4ba" />
       <rect x="92" y="21" width="230" height="18" rx="9" fill={P} />
       <text x="106" y="34" fontSize="10.5" fill="#5c6460" fontFamily="var(--font-sans), sans-serif">
-        ornek-atolye · örnek site
+        kurgusal örnek
       </text>
       <rect x="10" y="50" width="500" height="64" fill={N} />
       <text x="34" y="88" fontSize="17" fill={P} fontFamily="var(--font-serif), Georgia, serif">

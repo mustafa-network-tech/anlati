@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Anton, Caveat, Fraunces, IBM_Plex_Mono, Inter } from "next/font/google";
 import StudioHeader from "@/components/studio/StudioHeader";
 import StudioFooter from "@/components/studio/StudioFooter";
-import { siteUrl } from "@/lib/studio";
+import { ogImages, siteUrl } from "@/lib/studio";
 import "./globals.css";
 import "./studio.css";
 
@@ -14,17 +14,14 @@ const sans = Inter({ subsets: ["latin", "latin-ext"], variable: "--font-sans", d
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  openGraph: { type: "website", locale: "tr_TR", siteName: "ANLATI", images: ogImages },
+  twitter: { card: "summary_large_image", images: ogImages },
   title: {
     default: "ANLATI — İşinizi anlatıya, anlatınızı büyümeye dönüştürün",
     template: "%s | ANLATI",
   },
   description:
     "Marka, kurucu ve kurum anlatısı hazırlayan anlatı stüdyosu. Ne yaptığınızı anlaşılır, hatırlanır ve güvenilir bir hikâyeye dönüştürüyoruz.",
-  icons: {
-    icon: [{ url: "/image/logo.jpeg", type: "image/jpeg" }],
-    shortcut: "/image/logo.jpeg",
-    apple: "/image/logo.jpeg",
-  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

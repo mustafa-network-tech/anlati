@@ -92,7 +92,7 @@
 }
 @media(max-width:520px){
 .st-steps{grid-template-columns:1fr}
-.st-nav a:nth-child(n+3){display:none}
+
 }
 .st-price-block{margin:14px 0}
 .st-price-block .st-price{margin:8px 0 2px}
@@ -104,3 +104,27 @@
 .st-btn:focus-visible,.st-nav a:focus-visible,.st-form input:focus-visible,.st-form textarea:focus-visible,.st-footer a:focus-visible{outline:3px solid #a35f3d;outline-offset:3px}
 
 .st-footer{display:flex;justify-content:space-between;gap:24px}
+
+.logo{display:inline-flex;align-items:center;gap:9px}
+.logo svg{display:block}
+.logo-word{font-family:var(--font-serif),Georgia,serif;font-weight:700;font-size:25px;letter-spacing:-.01em;color:var(--ink);line-height:1}
+.logo-word span{color:var(--copper)}
+
+.st-menu{display:none;position:relative}
+.st-menu-btn{width:46px;height:46px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:inline-grid;place-items:center;cursor:pointer}
+.st-menu-btn:focus-visible{outline:3px solid #a35f3d;outline-offset:2px}
+.st-menu-btn .bars{display:grid;gap:5px;width:20px}
+.st-menu-btn .bars i{display:block;height:2px;background:var(--navy);border-radius:2px;transition:transform .25s,opacity .2s}
+.st-menu-btn .bars.open i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.st-menu-btn .bars.open i:nth-child(2){opacity:0}
+.st-menu-btn .bars.open i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.st-menu-panel{position:absolute;right:0;top:calc(100% + 10px);width:min(86vw,320px);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;display:grid;gap:2px;box-shadow:0 24px 40px -22px #17364266;z-index:60}
+.st-menu-panel a{display:flex;align-items:center;min-height:48px;padding:0 14px;border-radius:8px;font-weight:700}
+.st-menu-panel a:hover{background:#17364210}
+.st-menu-panel .st-btn{margin-top:6px;justify-content:center;color:#fff}
+@media(max-width:900px){
+.st-nav{display:none}
+.st-menu{display:block;margin-left:0}
+.st-head-cta{margin-left:auto}
+}
+@media(max-width:380px){.st-head-cta{display:none}.st-menu{margin-left:auto}}

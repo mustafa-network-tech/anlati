@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import QuoteForm from "@/components/studio/QuoteForm";
-import { contactEmail, packages, siteUrl, whatsappDisplay, whatsappLink } from "@/lib/studio";
+import { contactEmail, ogImages, packages, siteUrl, whatsappDisplay, whatsappLink } from "@/lib/studio";
 
 export const metadata: Metadata = {
   title: "İletişim ve Teklif",
   description: "Marka, kurucu veya kurum anlatısı için kısa bir form doldurun, size dönüş yapalım.",
   alternates: { canonical: "/iletisim" },
-  openGraph: { title: "İletişim ve Teklif | ANLATI", type: "website", url: `${siteUrl}/iletisim`, locale: "tr_TR", siteName: "ANLATI" },
+  openGraph: { title: "İletişim ve Teklif | ANLATI", type: "website", url: `${siteUrl}/iletisim`, locale: "tr_TR", siteName: "ANLATI", images: ogImages },
 };
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ paket?: string }> }) {

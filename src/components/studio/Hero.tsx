@@ -22,19 +22,22 @@ export default function Hero() {
               </svg>
             </span>
           </h1>
-          <Kinetic as="p" className="hx-lede" text="İşletmeler, kurucular ve kurumlar için marka hikâyeleri ve web sitesi metinleri hazırlıyoruz. Amacımız tek: işinizin ~anlaşılır, hatırlanır ve tercih edilir~ olması." from="right" />
-          <div className="hx-actions">
-            <Link href="/iletisim" className="st-btn">
-              Hikâyenizi konuşalım ↗
-            </Link>
-            <Link href="#anlatinin-olusumu" className="st-btn st-btn-ghost">
-              Bir anlatının oluşumunu görün ↓
-            </Link>
-          </div>
+          <Kinetic as="p" eager className="hx-lede" text="İşletmeler, kurucular ve kurumlar için marka hikâyeleri ve web sitesi metinleri hazırlıyoruz." />
+          <Kinetic as="p" eager className="hx-aim" text="Amacımız tek: işinizin ~anlaşılır, hatırlanır ve tercih edilir~ olması." />
         </div>
 
-        <div className="hx-stage" role="group" aria-label="Örnek anlatı: bir ahşap atölyesinin üç röportaj notu">
-          <span className="hx-tag">Örnek anlatı · Ahşap atölyesi</span>
+        <div className="hx-actions">
+          <Link href="/iletisim" className="st-btn">
+            Hikâyenizi konuşalım ↗
+          </Link>
+          <Link href="#anlatinin-olusumu" className="st-btn st-btn-ghost">
+            Bir anlatının oluşumunu görün ↓
+          </Link>
+        </div>
+
+        <div className="hx-stagewrap">
+        <div className="hx-stage" role="group" aria-label="Kurgusal örnek: bir ahşap atölyesinin röportaj notları">
+          <span className="hx-tag">Kurgusal örnek · Ahşap atölyesi</span>
 
           <svg className="hx-art" viewBox="0 0 400 480" aria-hidden="true">
             <defs>
@@ -111,7 +114,7 @@ export default function Hero() {
           <article className="hx-card hx-a" style={{ ["--r" as string]: "-4deg", ["--d" as string]: "0s" }}>
             <span className="hx-pg">Kuruluş</span>
             <p>“1987’de babamın tezgâhından kalan üç aletle başladık.”</p>
-            <small>Kurucu, röportaj notu</small>
+            <small>Kurgusal röportaj notu</small>
             <i className="hx-tape" aria-hidden="true" />
           </article>
 
@@ -120,13 +123,13 @@ export default function Hero() {
             <p>
               “Bir sandalye tek bir elden çıkar. <em>İmzamız bu.</em>”
             </p>
-            <small>Usta, röportaj notu</small>
+            <small>Kurgusal röportaj notu</small>
           </article>
 
           <article className="hx-card hx-c" style={{ ["--r" as string]: "-2.5deg", ["--d" as string]: ".36s" }}>
             <span className="hx-pg">Bugün</span>
             <p>“Her siparişi, onu yapan ustanın adıyla teslim ediyoruz.”</p>
-            <small>Kurucu, röportaj notu</small>
+            <small>Kurgusal röportaj notu</small>
             <i className="hx-tape hx-tape-r" aria-hidden="true" />
           </article>
 
@@ -149,13 +152,15 @@ export default function Hero() {
             <circle cx="60" cy="60" r="34" />
             <text>
               <textPath href="#hx-circle" startOffset="0">
-                ÖRNEK ANLATI · AHŞAP ATÖLYESİ ·
+                KURGUSAL ÖRNEK · AHŞAP ATÖLYESİ ·
               </textPath>
             </text>
             <text x="60" y="66" textAnchor="middle" className="hx-stamp-n">
               A.
             </text>
           </svg>
+        </div>
+        <p className="hx-disclaimer">Yöntemimizi göstermek için hazırlanmıştır; gerçek müşteri çalışması değildir.</p>
         </div>
       </div>
     </section>

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Logo from "./Logo";
+import MobileMenu from "./MobileMenu";
 
 const links: [string, string][] = [
   ["/hizmetler", "Hizmetler"],
@@ -11,9 +13,7 @@ export default function StudioHeader() {
   return (
     <header className="st-header">
       <div className="st-header-inner">
-        <Link href="/" className="wordmark">
-          ANLATI<span>.</span>
-        </Link>
+        <Logo />
         <nav className="st-nav" aria-label="Ana menü">
           {links.map(([href, label]) => (
             <Link key={href} href={href}>
@@ -21,9 +21,10 @@ export default function StudioHeader() {
             </Link>
           ))}
         </nav>
-        <Link href="/iletisim" className="st-btn st-btn-sm">
+        <Link href="/iletisim" className="st-btn st-btn-sm st-head-cta">
           Teklif iste
         </Link>
+        <MobileMenu />
       </div>
     </header>
   );

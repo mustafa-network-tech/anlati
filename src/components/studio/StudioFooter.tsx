@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "./Logo";
 import { services } from "@/lib/services";
 import { contactEmail, whatsappDisplay, whatsappLink } from "@/lib/studio";
 
@@ -7,9 +8,7 @@ export default function StudioFooter() {
     <footer className="st-footer">
       <div className="st-footer-main">
         <div>
-          <Link href="/" className="wordmark">
-            ANLATI<span>.</span>
-          </Link>
+          <Logo />
           <p>İşinizi anlatıya, anlatınızı büyümeye dönüştürün.</p>
         </div>
         <nav aria-label="Alt menü">

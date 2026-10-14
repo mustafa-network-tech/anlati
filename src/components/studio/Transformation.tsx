@@ -85,6 +85,7 @@ export default function Transformation() {
       <div className="tf-track" ref={track}>
         <div className="tf-sticky" ref={sticky}>
           <div className="tf-stage" style={vars}>
+            <span className="tf-fic">Kurgusal örnek</span>
             <div className="tf-before">
               <div className="tf-chrome">
                 <i />
@@ -169,6 +170,7 @@ export default function Transformation() {
             />
             <span>Sonra</span>
           </label>
+          <p className="hx-disclaimer">Yöntemimizi göstermek için hazırlanmıştır; gerçek müşteri çalışması değildir.</p>
         </div>
       </div>
     </div>

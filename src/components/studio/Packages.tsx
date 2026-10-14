@@ -1,32 +1,23 @@
 import Link from "next/link";
-import { packages, tl } from "@/lib/studio";
+import { isLaunchActive, packages } from "@/lib/studio";
+import LaunchNote from "./LaunchNote";
+import PriceBlock from "./PriceBlock";
 
 export default function Packages() {
+  const active = isLaunchActive();
   return (
+    <>
     <div className="st-packages">
       {packages.map((p) => (
         <article key={p.id} className={p.featured ? "st-package featured" : "st-package"}>
           <h3>{p.name}</h3>
           <p className="st-package-tag">{p.tagline}</p>
-          {p.price === null ? (
-            <p className="st-price">{p.priceNote}</p>
-          ) : p.campaignPrice !== undefined ? (
-            <div className="st-price-block">
-              <span className="st-badge">Lansman fiyatı · ilk 3 ay</span>
-              <p className="st-price">
-                {tl(p.campaignPrice)}
-                <small> {p.priceNote}</small>
-              </p>
-              <p className="st-price-old">
-                Liste fiyatı: <s>{tl(p.price)}</s>
-              </p>
-            </div>
-          ) : (
-            <p className="st-price">
-              {tl(p.price)}
-              <small> {p.priceNote}</small>
-            </p>
-          )}
+          <PriceBlock
+            launchPrice={p.launchPrice}
+            postLaunchPrice={p.postLaunchPrice}
+            priceNote={p.priceNote}
+            initialActive={active}
+          />
           <dl>
             <div>
               <dt>Süre</dt>
@@ -55,5 +46,7 @@ export default function Packages() {
         </article>
       ))}
     </div>
+    <LaunchNote initialActive={active} />
+    </>
   );
 }

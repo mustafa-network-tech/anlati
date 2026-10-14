@@ -7,10 +7,11 @@ import KindsShowcase from "@/components/studio/KindsShowcase";
 import JsonLd from "@/components/studio/JsonLd";
 import Packages from "@/components/studio/Packages";
 import Reveal from "@/components/studio/Reveal";
+import Team from "@/components/studio/Team";
 import Transformation from "@/components/studio/Transformation";
 import StoryPage from "@/components/studio/StoryPage";
 import SuccessBand from "@/components/studio/SuccessBand";
-import { contactEmail, faqs, posters, siteUrl, steps, whatsappLink, whatsappNumber } from "@/lib/studio";
+import { contactEmail, getFaqs, isLaunchActive, launchNote, ogImages, posters, siteUrl, steps, whatsappLink, whatsappNumber } from "@/lib/studio";
 import "@/components/studio/home.css";
 
 const title = "Marka Hikâyesi ve Kurumsal Metin Yazarlığı | ANLATI";
@@ -21,11 +22,15 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/" },
-  openGraph: { title, description, type: "website", url: siteUrl, locale: "tr_TR", siteName: "ANLATI", images: ["/image/anlati-hero-life.png"] },
-  twitter: { card: "summary_large_image", title, description, images: ["/image/anlati-hero-life.png"] },
+  openGraph: { title, description, type: "website", url: siteUrl, locale: "tr_TR", siteName: "ANLATI", images: ogImages },
+  twitter: { card: "summary_large_image", title, description, images: ogImages },
 };
 
+export const revalidate = 3600;
+
 export default function Home() {
+  const faqs = getFaqs();
+  const priceNote = isLaunchActive() ? launchNote : "Güncel fiyatlar için teklif alın.";
   return (
     <main className="st-main">
       <JsonLd
@@ -38,7 +43,7 @@ export default function Home() {
               "@id": `${siteUrl}/#org`,
               name: "ANLATI",
               url: siteUrl,
-              logo: `${siteUrl}/image/logo.jpeg`,
+              logo: `${siteUrl}/og/anlati-logo.png`,
               parentOrganization: { "@type": "Organization", name: "MK Digital Systems" },
               email: contactEmail,
               telephone: `+${whatsappNumber}`,
@@ -102,13 +107,15 @@ export default function Home() {
         </div>
       </section>
 
+      <Team />
+
       <SuccessBand />
 
       <section className="hm-sec hm-paper" id="paketler" aria-labelledby="paket-baslik">
         <Reveal className="hm-head" from="left">
           <p className="hm-eyebrow">PAKETLER</p>
           <Kinetic as="h2" id="paket-baslik" text="^Net kapsam,^ _açık fiyat._" from="alt" by="word" />
-          <Kinetic as="p" className="hm-sub" text="Süre, revizyon ve ~kapsam dışı işler~ baştan yazılıdır. Lansman fiyatları ilk 3 ay boyunca geçerlidir." from="right" />
+          <Kinetic as="p" className="hm-sub" text={`Süre, revizyon ve ~kapsam dışı işler~ baştan yazılıdır. ${priceNote}`} from="right" />
         </Reveal>
         <Reveal>
           <Packages />

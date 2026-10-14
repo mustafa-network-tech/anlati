@@ -40,3 +40,9 @@
 .sv-steps{grid-template-columns:1fr 1fr}
 }
 @media(max-width:520px){.sv-steps{grid-template-columns:1fr}}
+
+.tm-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.tm-list li{border-top:2px solid var(--ink);padding-top:14px}
+.tm-list h3{font-family:var(--font-serif),Georgia,serif;font-weight:500;font-size:26px;margin:0}
+.tm-list b{display:block;font-family:var(--font-mono),monospace;font-size:12px;letter-spacing:.1em;color:#8a4a2c;margin:6px 0 10px}
+.tm-list p{margin:0;color:#4a524f}

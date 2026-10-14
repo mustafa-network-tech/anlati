@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ServicePage from "@/components/studio/ServicePage";
 import { getService, services } from "@/lib/services";
-import { siteUrl } from "@/lib/studio";
+import { ogImages, siteUrl } from "@/lib/studio";
 
 export const dynamicParams = false;
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -19,8 +20,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: s.metaTitle,
     description: s.description,
     alternates: { canonical: `/hizmetler/${s.slug}` },
-    openGraph: { title: `${s.metaTitle} | ANLATI`, description: s.description, type: "website", url, locale: "tr_TR", siteName: "ANLATI" },
-    twitter: { card: "summary_large_image", title: `${s.metaTitle} | ANLATI`, description: s.description },
+    openGraph: { title: `${s.metaTitle} | ANLATI`, description: s.description, type: "website", url, locale: "tr_TR", siteName: "ANLATI", images: ogImages },
+    twitter: { card: "summary_large_image", title: `${s.metaTitle} | ANLATI`, description: s.description, images: ogImages },
   };
 }
 

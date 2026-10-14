@@ -9,7 +9,7 @@ export default function StoryPage() {
         <Reveal className="hx-story-inner">
           <aside>
             Anlatı sayfası
-            <span>Örnek anlatı · Ahşap atölyesi</span>
+            <span>Kurgusal örnek · Ahşap atölyesi</span>
           </aside>
           <div>
             <Kinetic as="h2" id="hx-story-title" text="Dağınık notlar, ~tek bir sayfa.~" from="right" />
@@ -18,6 +18,7 @@ export default function StoryPage() {
               işin özü değişmedi: <mark>bir sandalye tek bir elden çıkar ve imzamızı taşır.</mark> Bugün de her siparişi,
               onu yapan ustanın adıyla teslim ediyoruz.
             </p>
+            <p className="hx-disclaimer">Yöntemimizi göstermek için hazırlanmıştır; gerçek müşteri çalışması değildir.</p>
           </div>
         </Reveal>
       </section>
