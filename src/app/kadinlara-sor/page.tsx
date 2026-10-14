@@ -1,1 +1,0 @@
-import AudienceTopicsPage from"@/components/AudienceTopicsPage";export const metadata={title:"Kadınlara Sor",description:"Kadınların görüşünün beklendiği güncel sorular."};export default function Page(){return <AudienceTopicsPage audience="female"/>}

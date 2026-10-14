@@ -1,1 +1,0 @@
-import AudienceTopicsPage from"@/components/AudienceTopicsPage";export const metadata={title:"Erkeklere Sor",description:"Erkeklerin deneyiminin beklendiği güncel sorular."};export default function Page(){return <AudienceTopicsPage audience="male"/>}
