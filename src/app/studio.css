@@ -128,3 +128,9 @@
 .st-head-cta{margin-left:auto}
 }
 @media(max-width:380px){.st-head-cta{display:none}.st-menu{margin-left:auto}}
+
+.logo{gap:10px}
+.logo-mark{display:flex;align-items:baseline;justify-content:center;width:40px;height:40px;border-radius:11px;background:#173642;color:#f3f0e9;font-family:var(--font-serif),Georgia,serif;font-weight:900;font-size:27px;line-height:40px;letter-spacing:-.02em;overflow:hidden}
+.logo-mark span{color:#a35f3d}
+.logo-word{font-size:21px;letter-spacing:.04em}
+@media(max-width:380px){.logo-word{font-size:18px}.logo-mark{width:36px;height:36px;font-size:24px}}
