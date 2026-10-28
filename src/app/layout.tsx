@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Anton, Caveat, Fraunces, IBM_Plex_Mono, Inter } from "next/font/google";
 import StudioHeader from "@/components/studio/StudioHeader";
 import StudioFooter from "@/components/studio/StudioFooter";
+import RepublicWelcome from "@/components/studio/RepublicWelcome";
 import { ogImages, siteUrl } from "@/lib/studio";
 import "./globals.css";
 import "./studio.css";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StudioHeader />
         {children}
         <StudioFooter />
+        <RepublicWelcome />
       </body>
     </html>
   );

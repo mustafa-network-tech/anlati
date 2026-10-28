@@ -1,0 +1,151 @@
+.republic-welcome {
+  --republic-duration: 10s;
+}
+
+.republic-welcome[hidden], .republic-flag[hidden] { display: none !important; }
+
+.republic-welcome {
+  position: fixed;
+  z-index: 2147483000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(.65rem, 2vw, 1.5rem);
+  isolation: isolate;
+}
+
+.republic-welcome__backdrop {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(239, 56, 40, .35), transparent 55%),
+    #160000;
+  animation: backdrop-in .8s ease both;
+}
+
+.republic-welcome__dialog {
+  position: relative;
+  width: min(100%, calc(100dvh - clamp(1.3rem, 4vw, 3rem)), 1120px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: clamp(1rem, 2.4vw, 2rem);
+  background: #2a0302;
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, .62), inset 0 0 0 1px rgba(255,255,255,.08);
+  animation: card-in 1s cubic-bezier(.2,.72,.2,1) both;
+}
+
+.republic-welcome__picture,
+.republic-welcome__picture img { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.republic-welcome__picture img {
+  object-fit: contain;
+  object-position: center;
+  transform: scale(.98);
+  animation: republic-zoom var(--republic-duration) ease-out both;
+}
+
+.republic-welcome__controls {
+  position: absolute;
+  z-index: 4;
+  top: clamp(1rem, 2.5vw, 1.75rem);
+  right: clamp(1rem, 2.5vw, 1.75rem);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.republic-welcome__timer,
+.republic-welcome__skip {
+  display: grid;
+  place-items: center;
+  height: 2.65rem;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  background: rgba(25,0,0,.48);
+  box-shadow: 0 .3rem 1.4rem rgba(0,0,0,.2);
+  backdrop-filter: blur(10px);
+}
+
+.republic-welcome__timer { width: 2.65rem; border-radius: 50%; font-variant-numeric: tabular-nums; }
+
+.republic-welcome__skip {
+  min-width: 4.5rem;
+  border-radius: 999px;
+  padding: 0 1rem;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.republic-welcome__skip:hover { background: rgba(215,25,32,.8); transform: translateY(-1px); }
+
+.republic-welcome__skip:focus-visible,
+.republic-flag:focus-visible,
+.preview-button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+.republic-welcome__progress {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255,255,255,.14);
+}
+
+.republic-welcome__progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, #fff3e8, #e31f25);
+  animation: countdown-line var(--republic-duration) linear both;
+}
+
+.republic-welcome.is-closing { pointer-events: none; animation: welcome-out .5s ease both; }
+
+.republic-flag {
+  position: fixed;
+  z-index: 2147482000;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  width: 3.65rem;
+  height: 3.65rem;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 50%;
+  padding: 0;
+  background: #7e0508;
+  box-shadow: 0 .8rem 2.5rem rgba(60,0,0,.32);
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.republic-flag:hover { transform: translateY(-3px); }
+.republic-flag__pole { position: absolute; left: 1rem; top: .72rem; width: 2px; height: 2.25rem; border-radius: 2px; background: #f5e3c9; }
+.republic-flag__cloth { position: absolute; left: 1.08rem; top: .75rem; width: 1.85rem; height: 1.28rem; border-radius: .08rem .28rem .28rem .08rem; color: #fff; background: #e31f25; transform: skewY(5deg); }
+.republic-flag__moon { position: absolute; left: .4rem; top: .04rem; font-size: .9rem; transform: rotate(-12deg); }
+.republic-flag__star { position: absolute; left: 1rem; top: .37rem; font-size: .42rem; }
+
+.republic-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@keyframes card-in { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes republic-zoom { from { transform: scale(.98); } to { transform: scale(1); } }
+@keyframes countdown-line { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes welcome-out { to { opacity: 0; transform: scale(1.015); } }
+
+@media (max-width: 720px), (orientation: portrait) {
+  .republic-welcome { padding: 0; }
+  .republic-welcome__dialog { width: 100%; height: 100dvh; aspect-ratio: auto; border: 0; border-radius: 0; }
+  .republic-welcome__picture img { object-position: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .republic-welcome__backdrop,
+  .republic-welcome__dialog,
+  .republic-welcome__picture img { animation: none !important; }
+  .republic-welcome__progress span { animation-timing-function: steps(10, end); }
+  .republic-welcome.is-closing { animation-duration: .01ms; }
+}
