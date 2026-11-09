@@ -1,0 +1,112 @@
+.ozel-gun {
+  position: fixed;
+  z-index: 2147483600;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+  animation: ozel-gun-in 1.2s ease both;
+}
+
+.ozel-gun__picture,
+.ozel-gun__picture img {
+  width: 100%;
+  height: 100%;
+}
+
+.ozel-gun__picture img {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ozel-gun__kapat {
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  min-width: 4.5rem;
+  height: 2.65rem;
+  padding: 0 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ozel-gun__kapat:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.ozel-gun__kapat:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.ozel-gun__odak {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ozel-gun__ilerleme {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ozel-gun__ilerleme span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: rgba(255, 255, 255, 0.7);
+  animation: ozel-gun-sayac var(--ozel-gun-sure) var(--ozel-gun-gecen) linear both;
+}
+
+.ozel-gun__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.ozel-gun.is-closing {
+  pointer-events: none;
+  animation: ozel-gun-out 0.6s ease both;
+}
+
+@keyframes ozel-gun-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ozel-gun-out {
+  to { opacity: 0; }
+}
+
+@keyframes ozel-gun-sayac {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ozel-gun,
+  .ozel-gun.is-closing {
+    animation: none;
+  }
+}
